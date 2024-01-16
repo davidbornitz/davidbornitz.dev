@@ -1,0 +1,19 @@
+body {
+  background-color: white;
+  font-family: verdana;
+  color: black;
+}
+
+h1 {
+  text-align: center;
+}
+
+p {
+  font-size: 20px;
+}
+
+li {
+  font-size: 14px;
+  margin-left: 10px;
+  list-style-type: disc;
+}
