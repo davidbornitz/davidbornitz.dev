@@ -1,6 +1,9 @@
 name: Deploy Resume
 run-name: ${{ github.actor }} is deploying a new resume 🚀
 on: [push]
+env:
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 defaults:
   run:
     working-directory: resume
