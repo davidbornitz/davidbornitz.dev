@@ -1,11 +1,11 @@
 terraform {
-  
-backend "s3" {
-    bucket         	   = "dbornitz-tfstate-1ef8"
-    key              	 = "state/terraform.tfstate"
-    region         	   = "us-east-2"
-    encrypt        	   = true
-    dynamodb_table     = "app-state"
+
+  backend "s3" {
+    bucket         = "dbornitz-tfstate-1ef8"
+    key            = "state/terraform.tfstate"
+    region         = "us-east-2"
+    encrypt        = true
+    dynamodb_table = "app-state"
   }
 }
 
@@ -27,7 +27,7 @@ locals {
 }
 
 resource "aws_s3_bucket" "resume" {
-  bucket = "dbornitz-resume"  
+  bucket = "dbornitz-resume"
 }
 
 resource "aws_s3_bucket_website_configuration" "resume" {
@@ -51,12 +51,12 @@ resource "aws_s3_bucket_public_access_block" "resume" {
 }
 
 resource "aws_s3_object" "resume_website" {
-  for_each = fileset("${path.module}/content", "**")
-  bucket = aws_s3_bucket.resume.id
-  key    = each.key
-  source = "${path.module}/content/${each.value}"
-  etag   = filemd5("${path.module}/content/${each.value}")
-  content_type = lookup(local.content_types, regex("\\.[^.]+$", each.value), null)
+  for_each      = fileset("${path.module}/content", "**")
+  bucket        = aws_s3_bucket.resume.id
+  key           = each.key
+  source        = "${path.module}/content/${each.value}"
+  etag          = filemd5("${path.module}/content/${each.value}")
+  content_type  = lookup(local.content_types, regex("\\.[^.]+$", each.value), null)
   cache_control = "max-age=0"
 }
 
@@ -105,7 +105,7 @@ resource "aws_cloudfront_distribution" "resume" {
   aliases = ["resume.davidbornitz.dev"]
 
   default_cache_behavior {
-    allowed_methods  = ["HEAD","GET"]
+    allowed_methods  = ["HEAD", "GET"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "resume"
 
@@ -132,8 +132,8 @@ resource "aws_cloudfront_distribution" "resume" {
 
 
   viewer_certificate {
-    acm_certificate_arn = aws_acm_certificate.resume.arn
-    ssl_support_method = "sni-only"
+    acm_certificate_arn      = aws_acm_certificate.resume.arn
+    ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
 }
@@ -147,7 +147,7 @@ resource "aws_cloudfront_origin_access_control" "resume" {
 }
 
 resource "aws_acm_certificate" "resume" {
-  provider = aws.us-east-1
+  provider          = aws.us-east-1
   domain_name       = "*.davidbornitz.dev"
   validation_method = "DNS"
 
@@ -190,7 +190,7 @@ resource "aws_route53_record" "resume_validation" {
 }
 
 resource "aws_acm_certificate_validation" "resume" {
-  provider = aws.us-east-1
+  provider                = aws.us-east-1
   certificate_arn         = aws_acm_certificate.resume.arn
   validation_record_fqdns = [for record in aws_route53_record.resume_validation : record.fqdn]
 }

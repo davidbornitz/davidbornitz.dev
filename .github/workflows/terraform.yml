@@ -5,12 +5,12 @@ on:
    branches:
    - main
    paths:
-   - terraform/**
+   - resume/**
  pull_request:
    branches:
    - main
    paths:
-   - terraform/**
+   - resume/**
  
 env:
  # verbosity setting for Terraform logs
@@ -29,7 +29,7 @@ jobs:
      run:
        shell: bash
        # We keep Terraform files in the terraform directory.
-       working-directory: ./terraform
+       working-directory: resume
  
    steps:
      - name: Checkout the repository to the runner
