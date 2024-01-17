@@ -1,18 +1,84 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
-jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+defaults:
+    run:
+      working-directory: ${{ env.tf_actions_working_dir }}
+  permissions:
+    pull-requests: write
+  steps:
+  - uses: actions/checkout@v3
+  - uses: hashicorp/setup-terraform@v3
+  
+  - name: Terraform fmt
+    id: fmt
+    run: terraform fmt -check
+    continue-on-error: true
+  
+  - name: Terraform Init
+    id: init
+    run: terraform init
+  
+  - name: Terraform Validate
+    id: validate
+    run: terraform validate -no-color
+  
+  - name: Terraform Plan
+    id: plan
+    run: terraform plan -no-color
+    continue-on-error: true
+  
+  - uses: actions/github-script@v6
+    if: github.event_name == 'pull_request'
+    env:
+      PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+    with:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+      script: |
+        // 1. Retrieve existing bot comments for the PR
+        const { data: comments } = await github.rest.issues.listComments({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          issue_number: context.issue.number,
+        })
+        const botComment = comments.find(comment => {
+          return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
+        })
+  
+        // 2. Prepare format of the comment
+        const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+        #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+        #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+        <details><summary>Validation Output</summary>
+  
+        \`\`\`\n
+        ${{ steps.validate.outputs.stdout }}
+        \`\`\`
+  
+        </details>
+  
+        #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+  
+        <details><summary>Show Plan</summary>
+  
+        \`\`\`\n
+        ${process.env.PLAN}
+        \`\`\`
+  
+        </details>
+  
+        *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+  
+        // 3. If we have a comment, update it, otherwise create a new one
+        if (botComment) {
+          github.rest.issues.updateComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            comment_id: botComment.id,
+            body: output
+          })
+        } else {
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+        }
