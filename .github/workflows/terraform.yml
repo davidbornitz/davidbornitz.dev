@@ -23,7 +23,7 @@ env:
  
 jobs:
  terraform:
-   name: "TResume Change Pipeline"
+   name: "Resume Change Pipeline"
    runs-on: ubuntu-latest
    defaults:
      run:
