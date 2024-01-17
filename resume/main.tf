@@ -1,11 +1,11 @@
 terraform {
   
 backend "s3" {
-    bucket         	   = "dbornitz-tfstate"
-    key              	   = "state/terraform.tfstate"
+    bucket         	   = "${var.backend_bucket}"
+    key              	 = "state/terraform.tfstate"
     region         	   = "us-east-2"
     encrypt        	   = true
-    dynamodb_table = "app-state"
+    dynamodb_table     = "app-state"
   }
 }
 
