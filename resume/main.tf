@@ -92,6 +92,7 @@ data "aws_iam_policy_document" "allow_cloudfront_access" {
 }
 
 resource "aws_cloudfront_distribution" "resume" {
+  depends_on = [aws_acm_certificate_validation.resume]
   origin {
     domain_name              = aws_s3_bucket.resume.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.resume.id
