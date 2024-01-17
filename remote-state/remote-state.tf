@@ -2,12 +2,17 @@ provider "aws" {
   region = "us-east-2"
 }
 
+resource "random_id" "bucket" {
+    byte_length = 2
+}
+
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "dbornitz-tfstate"
+  bucket = "dbornitz-tfstate-${random_id.bucket.hex}"
 
   lifecycle {
     prevent_destroy = true
   }
+
 }
 
 resource "aws_s3_bucket_versioning" "terraform_state" {
