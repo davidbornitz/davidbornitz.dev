@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is deploying a new resume 🚀
 on: [push]
 defaults:
   run:
-    working-directory: /resume
+    working-directory: ${GITHUB_WORKSPACE}/resume
 permissions:
   pull-requests: write
 jobs:
