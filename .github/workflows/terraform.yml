@@ -1,4 +1,4 @@
-name: "Terraform Infrastructure Change Management Pipeline with GitHub Actions"
+name: "Resume Change Pipeline"
  
 on:
  push:
@@ -23,7 +23,7 @@ env:
  
 jobs:
  terraform:
-   name: "Terraform Infrastructure Change Management"
+   name: "TResume Change Pipeline"
    runs-on: ubuntu-latest
    defaults:
      run:
