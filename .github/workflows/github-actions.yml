@@ -1,6 +1,6 @@
 name: Deploy Resume
 run-name: ${{ github.actor }} is deploying a new resume 🚀
-on: [push]
+on: [pull_request]
 env:
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -10,7 +10,7 @@ defaults:
 permissions:
   pull-requests: write
 jobs:
-  terraform-apply:
+  terraform-plan:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
