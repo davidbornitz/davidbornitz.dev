@@ -121,6 +121,7 @@ resource "aws_cloudfront_origin_access_control" "davidbornitz" {
 resource "aws_acm_certificate" "davidbornitz" {
   provider          = aws.us-east-1
   domain_name       = "*.davidbornitz.dev"
+  subject_alternative_names = ["davidbornitz.dev"]
   validation_method = "DNS"
 
   lifecycle {
