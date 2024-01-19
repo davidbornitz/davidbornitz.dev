@@ -79,7 +79,7 @@ resource "aws_cloudfront_distribution" "davidbornitz" {
   default_cache_behavior {
     allowed_methods  = ["HEAD", "GET"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "resume"
+    target_origin_id = "resume.davidbornitz.dev"
 
     forwarded_values {
       query_string = false
