@@ -1,16 +1,16 @@
-name: "Resume Change Pipeline"
+name: "davidbornitz.dev Change Pipeline"
  
 on:
  push:
    branches:
    - main
    paths:
-   - resume/**
+   - davidbornitz.dev/**
  pull_request:
    branches:
    - main
    paths:
-   - resume/**
+   - davidbornitz.dev/**
  
 env:
  # verbosity setting for Terraform logs
@@ -23,13 +23,12 @@ env:
  
 jobs:
  terraform:
-   name: "Resume Change Pipeline"
+   name: "davidbornitz.dev Change Pipeline"
    runs-on: ubuntu-latest
    defaults:
      run:
        shell: bash
-       # We keep Terraform files in the terraform directory.
-       working-directory: resume
+       working-directory: davidbornitz.dev
  
    steps:
      - name: Checkout the repository to the runner
