@@ -26,7 +26,7 @@ locals {
 }
 
 module "s3origin" {
-  source  = "./modules/s3origin"
+  source = "./modules/s3origin"
 
   for_each = toset(local.sites)
 
@@ -40,16 +40,16 @@ module "bucket-access" {
 
   for_each = module.s3origin
 
-  bucket_id = each.value.bucket_id
-  bucket_arn = each.value.bucket_arn
+  bucket_id      = each.value.bucket_id
+  bucket_arn     = each.value.bucket_arn
   cloudfront_arn = aws_cloudfront_distribution.davidbornitz.arn
 }
- 
+
 resource "aws_route53_record" "record" {
   for_each = toset(local.sites)
-  zone_id = aws_route53_zone.davidbornitz.zone_id
-  name    = each.value
-  type    = "A"
+  zone_id  = aws_route53_zone.davidbornitz.zone_id
+  name     = each.value
+  type     = "A"
 
   alias {
     name                   = aws_cloudfront_distribution.davidbornitz.domain_name
@@ -60,7 +60,7 @@ resource "aws_route53_record" "record" {
 
 resource "aws_cloudfront_distribution" "davidbornitz" {
   depends_on = [aws_acm_certificate_validation.davidbornitz]
-  
+
   dynamic "origin" {
     for_each = module.s3origin
     content {
