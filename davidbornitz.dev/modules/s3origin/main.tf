@@ -50,11 +50,11 @@ data "aws_iam_policy_document" "allow_cloudfront_access" {
 }
 
 resource "aws_s3_object" "website" {
-  for_each      = fileset("${path.module}/../content/${var.name}", "**")
+  for_each      = fileset("${path.module}/content/${var.name}/", "**")
   bucket        = aws_s3_bucket.bucket.id
   key           = each.key
-  source        = "${path.module}/content/${each.value}"
-  etag          = filemd5("${path.module}/content/${each.value}")
+  source        = "${path.module}/content/${var.name}/${each.value}"
+  etag          = filemd5("${path.module}/content/${var.name}/${each.value}")
   content_type  = lookup(local.content_types, regex("\\.[^.]+$", each.value), null)
   cache_control = "max-age=0"
 }
