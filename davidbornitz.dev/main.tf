@@ -25,6 +25,16 @@ locals {
   ]
 }
 
+module "s3website" {
+  source = "./modules/s3website"
+
+  for_each = toset(local.sites)
+
+  name     = each.value
+  zone_id  = aws_route53_zone.davidbornitz.zone_id
+  cert_arn = aws_acm_certificate.davidbornitz.arn
+}
+
 module "s3origin" {
   source = "./modules/s3origin"
 
@@ -101,7 +111,6 @@ resource "aws_cloudfront_distribution" "davidbornitz" {
       locations        = []
     }
   }
-
 
   viewer_certificate {
     acm_certificate_arn      = aws_acm_certificate.davidbornitz.arn
