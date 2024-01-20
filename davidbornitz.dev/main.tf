@@ -34,6 +34,14 @@ module "s3website" {
   zone_id  = aws_route53_zone.davidbornitz.zone_id
   cert_arn = aws_acm_certificate.davidbornitz.arn
 }
+
+module "invitations" {
+  source = "./modules/invitations"
+
+  name     = "invitation.davidbornitz.dev"
+  zone_id  = aws_route53_zone.davidbornitz.zone_id
+  cert_arn = aws_acm_certificate.davidbornitz.arn
+}
 /*
 module "s3origin" {
   source = "./modules/s3origin"
