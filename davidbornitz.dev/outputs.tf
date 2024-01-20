@@ -2,7 +2,7 @@
 
 output "fileset" {
   description = "Fileset found by the module"
-  value = module.s3website["resume.davidbornitz.dev"].fileset
+  value       = module.s3website["resume.davidbornitz.dev"].fileset
 }
 
 
