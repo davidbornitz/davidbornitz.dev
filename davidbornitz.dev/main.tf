@@ -34,7 +34,7 @@ module "s3website" {
   zone_id  = aws_route53_zone.davidbornitz.zone_id
   cert_arn = aws_acm_certificate.davidbornitz.arn
 }
-
+/*
 module "s3origin" {
   source = "./modules/s3origin"
 
@@ -45,6 +45,7 @@ module "s3origin" {
   zone_id = aws_route53_zone.davidbornitz.zone_id
 }
 
+
 module "bucket-access" {
   source = "./modules/bucket-access"
 
@@ -54,20 +55,9 @@ module "bucket-access" {
   bucket_arn     = each.value.bucket_arn
   cloudfront_arn = aws_cloudfront_distribution.davidbornitz.arn
 }
+*/
 
-resource "aws_route53_record" "record" {
-  for_each = toset(local.sites)
-  zone_id  = aws_route53_zone.davidbornitz.zone_id
-  name     = each.value
-  type     = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.davidbornitz.domain_name
-    zone_id                = aws_cloudfront_distribution.davidbornitz.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
-
+/*
 resource "aws_cloudfront_distribution" "davidbornitz" {
   depends_on = [aws_acm_certificate_validation.davidbornitz]
 
@@ -118,6 +108,7 @@ resource "aws_cloudfront_distribution" "davidbornitz" {
     minimum_protocol_version = "TLSv1.2_2021"
   }
 }
+*/
 
 resource "aws_cloudfront_origin_access_control" "davidbornitz" {
   name                              = "davidbornitz"

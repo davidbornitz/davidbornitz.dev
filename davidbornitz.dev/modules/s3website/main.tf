@@ -8,7 +8,9 @@ locals {
     ".js" : "text/javascript"
   }
 
-  fileset = fileset("../../content/${var.name}/", "**")
+  content_path = "${path.module}/../../content/${var.name}/"
+
+  fileset = fileset(local.content_path, "**") # ${var.name}
 }
 
 resource "random_id" "bucket" {
@@ -41,8 +43,8 @@ resource "aws_s3_object" "website" {
   for_each      = local.fileset
   bucket        = aws_s3_bucket.bucket.id
   key           = each.key
-  source        = "../content/${var.name}/${each.value}"
-  etag          = filemd5("${path.module}/content/${var.name}/${each.value}")
+  source        = "${local.content_path}/${each.value}"
+  etag          = filemd5("${local.content_path}/${each.value}")
   content_type  = lookup(local.content_types, regex("\\.[^.]+$", each.value), null)
   cache_control = "max-age=0"
 }
@@ -70,6 +72,18 @@ data "aws_iam_policy_document" "allow_cloudfront_access" {
         "${aws_cloudfront_distribution.davidbornitz.arn}"
       ]
     }
+  }
+}
+
+resource "aws_route53_record" "record" {
+  zone_id  = var.zone_id
+  name     = var.name
+  type     = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.davidbornitz.domain_name
+    zone_id                = aws_cloudfront_distribution.davidbornitz.hosted_zone_id
+    evaluate_target_health = false
   }
 }
 

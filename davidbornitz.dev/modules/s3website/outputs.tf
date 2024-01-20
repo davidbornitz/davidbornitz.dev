@@ -15,6 +15,10 @@ output "bucket_regional_domain_name" {
   value       = aws_s3_bucket.bucket.bucket_regional_domain_name
 }
 
+output "content_path" {
+  value = local.content_path
+}
+
 output "fileset" {
   value = local.fileset
 }
