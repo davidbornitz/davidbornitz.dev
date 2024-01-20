@@ -96,6 +96,8 @@ resource "aws_cloudfront_distribution" "davidbornitz" {
       origin_id                = var.name
   }
 
+  aliases = [var.name]
+
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
