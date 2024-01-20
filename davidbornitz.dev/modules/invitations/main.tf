@@ -8,7 +8,7 @@ locals {
     ".js" : "text/javascript"
   }
 
-  content_path = "${path.module}/../../content/${var.name}/"
+  content_path = "${path.module}/../../content/${var.name}"
   key_path = "${path.module}/../../"
 
   fileset = fileset(local.content_path, "**") # ${var.name}
