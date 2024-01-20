@@ -120,7 +120,7 @@ resource "aws_cloudfront_distribution" "davidbornitz" {
 }
 
 resource "aws_cloudfront_origin_access_control" "davidbornitz" {
-  name                              = "davidbornitz"
+  name                              = "davidbornitz-${random_id.bucket.hex}"
   description                       = "Allow Only Cloudfront"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
