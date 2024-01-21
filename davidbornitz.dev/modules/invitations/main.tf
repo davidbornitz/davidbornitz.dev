@@ -172,11 +172,6 @@ resource "aws_dynamodb_table" "invitation" {
     type = "S"
   }
 
-  attribute {
-    name = "Dish"
-    type = "S"
-  }
-
   ttl {
     attribute_name = "TimeToExist"
     enabled        = false
@@ -248,8 +243,8 @@ resource "aws_iam_role_policy" "invitation" {
   policy = data.aws_iam_policy_document.invitation_role_policy.json
 }
 
-resource "aws_cognito_identity_pool_roles_attachment" "main" {
-  identity_pool_id = aws_cognito_identity_pool.main.id
+resource "aws_cognito_identity_pool_roles_attachment" "invitation" {
+  identity_pool_id = aws_cognito_identity_pool.invitation.id
 
   roles = {
     "unauthenticated" = aws_iam_role.invitation.arn
