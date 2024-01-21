@@ -157,3 +157,96 @@ resource "aws_cloudfront_key_group" "invitation" {
   items   = [aws_cloudfront_public_key.invitation.id]
   name    = "invitation-key-group"
 }
+
+# Create a Dynamo table to hold Super Bowl Potluck signups
+
+resource "aws_dynamodb_table" "invitation" {
+  name           = "invitation"
+  read_capacity  = 5
+  write_capacity = 5
+  hash_key       = "Name"
+  range_key      = "Name"
+
+  attribute {
+    name = "Name"
+    type = "S"
+  }
+
+  ttl {
+    attribute_name = "TimeToExist"
+    enabled        = false
+  }
+}
+
+# Create a Cognito Identity Pool to grant unauthenticated users AWS access
+resource "aws_cognito_identity_pool" "invitation" {
+  identity_pool_name               = "invitation"
+  allow_unauthenticated_identities = true
+  allow_classic_flow               = false
+}
+
+data "aws_iam_policy_document" "invitation" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Federated"
+      identifiers = ["cognito-identity.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "cognito-identity.amazonaws.com:aud"
+      values   = [aws_cognito_identity_pool.invitation.id]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "cognito-identity.amazonaws.com:amr"
+      values   = ["unauthenticated"]
+    }
+  }
+}
+
+resource "aws_iam_role" "invitation" {
+  name               = "invitation"
+  assume_role_policy = data.aws_iam_policy_document.invitation.json
+}
+
+data "aws_iam_policy_document" "invitation_role_policy" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "cognito-sync:*",
+      "cognito-identity:*"
+    ]
+
+    resources = ["*"]
+  }
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:PutItem"
+    ]
+
+    resources = [aws_dynamodb_table.invitation.arn]
+  }
+}
+
+resource "aws_iam_role_policy" "invitation" {
+  name   = "invitation_policy"
+  role   = aws_iam_role.invitation.id
+  policy = data.aws_iam_policy_document.invitation_role_policy.json
+}
+
+resource "aws_cognito_identity_pool_roles_attachment" "invitation" {
+  identity_pool_id = aws_cognito_identity_pool.invitation.id
+
+  roles = {
+    "unauthenticated" = aws_iam_role.invitation.arn
+  }
+}
