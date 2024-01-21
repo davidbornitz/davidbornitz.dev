@@ -165,7 +165,6 @@ resource "aws_dynamodb_table" "invitation" {
   read_capacity  = 5
   write_capacity = 5
   hash_key       = "Name"
-  range_key      = "Name"
 
   attribute {
     name = "Name"
