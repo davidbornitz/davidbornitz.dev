@@ -1,10 +1,18 @@
 body {
-  background-color: white;
   font-family: verdana;
   color: black;
+  background: rgba(165, 231, 181, .5);
   Max-width: 940px;
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+html { 
+  background: url(stadium.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .alignleft {
