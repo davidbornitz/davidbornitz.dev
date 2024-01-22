@@ -22,13 +22,12 @@ env:
  BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE}}
  
 jobs:
-  invitation-build:
-    name: "Build invitation app"
+  davidbornitz-build:
+    name: "Build davidbornitz.dev"
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-        working-directory: invitationApp
 
     strategy:
       matrix:
@@ -42,7 +41,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build
+    - name: BuildInvitation
+      working-directory: invitationApp
       run: |
         npm install
         yarn build:frontend
