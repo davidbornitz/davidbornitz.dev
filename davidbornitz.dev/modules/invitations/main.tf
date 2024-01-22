@@ -249,3 +249,13 @@ resource "aws_cognito_identity_pool_roles_attachment" "invitation" {
     "unauthenticated" = aws_iam_role.invitation.arn
   }
 }
+
+resource "aws_sns_topic" "invitation_updates" {
+  name = "invitation-updates"
+}
+
+resource "aws_sns_topic_subscription" "invitation" {
+  topic_arn = aws_sns_topic.invitation_updates.arn
+  protocol  = "email"
+  endpoint  = "davidbornitz@gmail.com"
+}
