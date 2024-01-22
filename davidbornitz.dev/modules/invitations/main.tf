@@ -104,7 +104,7 @@ resource "aws_cloudfront_distribution" "invitation" {
   default_root_object = "index.html"
 
   default_cache_behavior {
-    # trusted_key_groups = [aws_cloudfront_key_group.invitation.id]
+    #trusted_key_groups = [aws_cloudfront_key_group.invitation.id]
 
     allowed_methods  = ["HEAD", "GET"]
     cached_methods   = ["GET", "HEAD"]
@@ -157,6 +157,7 @@ resource "aws_cloudfront_key_group" "invitation" {
   items   = [aws_cloudfront_public_key.invitation.id]
   name    = "invitation-key-group"
 }
+
 
 # Create a Dynamo table to hold Super Bowl Potluck signups
 
