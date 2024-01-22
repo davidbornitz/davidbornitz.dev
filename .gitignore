@@ -1,3 +1,6 @@
+# Locally compiled invitation app
+/content/invitation.davidbornitz.dev/main.js
+
 # Local .terraform directories
 **/.terraform/*
 

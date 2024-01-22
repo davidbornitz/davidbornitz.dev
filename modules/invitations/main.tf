@@ -232,7 +232,8 @@ data "aws_iam_policy_document" "invitation_role_policy" {
     effect = "Allow"
 
     actions = [
-      "dynamodb:PutItem"
+      "dynamodb:PutItem",
+      "dynamodb:Scan"
     ]
 
     resources = [aws_dynamodb_table.invitation.arn]
