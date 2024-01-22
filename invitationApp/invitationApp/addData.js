@@ -63,7 +63,7 @@ export const submitData = async () => {
   const scanResults = await dynamoClient.send(new ScanCommand(scanParams));
   
   // Log the retrieved items
-  console.log("Retrieved items from DynamoDB:", scanResults.Items);
+  console.log("Here's who's bringing what:", scanResults.Items);
   
   // Display the results on the HTML page
   displayResults(scanResults.Items);
