@@ -1,5 +1,5 @@
 // Import required AWS SDK clients and commands for Node.js
-import { PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { PutItemCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
 import { PublishCommand } from "@aws-sdk/client-sns";
 import { snsClient } from "../libs/snsClient.js";
 import { dynamoClient } from "../libs/dynamoClient.js";
@@ -56,6 +56,32 @@ export const submitData = async () => {
   } else {
     alert("Enter data in each field.");
   }
+  const scanParams = {
+    TableName: tableName,
+  };
+  
+  const scanResults = await dynamoClient.send(new ScanCommand(scanParams));
+  
+  // Log the retrieved items
+  console.log("Retrieved items from DynamoDB:", scanResults.Items);
+  
+  // Display the results on the HTML page
+  displayResults(scanResults.Items);
 };
+
+const displayResults = (items) => {
+  const resultsContainer = document.getElementById("resultsContainer");
+
+  // Clear existing content in the container
+  resultsContainer.innerHTML = "";
+
+  // Iterate over the retrieved items and append them to the container
+  items.forEach((item) => {
+    const resultItem = document.createElement("div");
+    resultItem.textContent = JSON.stringify(item);
+    resultsContainer.appendChild(resultItem);
+  });
+};
+
 // Expose the function to the browser
 window.submitData = submitData;
