@@ -5,12 +5,12 @@ on:
    branches:
    - main
    paths:
-   - davidbornitz.dev/**
+   - /**
  pull_request:
    branches:
    - main
    paths:
-   - davidbornitz.dev/**
+   - /**
  
 env:
  # verbosity setting for Terraform logs
