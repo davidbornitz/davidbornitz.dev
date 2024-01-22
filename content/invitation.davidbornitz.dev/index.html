@@ -28,11 +28,20 @@
 
       <tr>
         <td></td>
-        <td><button type="button" onclick="submitData();">I'll Be There!</button></td>
+        <td><button type="button" onclick="handleButtonClick();">I'll Be There!</button></td>
         <script src="./main.js"></script>
       </tr>
     </table>
+    <div id="confirmationContainer"></div>
     <div id="resultsContainer"></div>
+    <script src="./main.js"></script>
+    <script>
+      // Ensure the script is loaded after the DOM content is ready
+      document.addEventListener("DOMContentLoaded", function() {
+        // Call the initializeResults function on page load
+        initializeResults();
+      });
+    </script>
   </body>
 </html>
 

@@ -29,7 +29,6 @@ export const submitData = async () => {
     try {
       //Upload the item to the table
       await dynamoClient.send(new PutItemCommand(params));
-      alert("You and your dish have been added to the very-exclusive guest list!");
       try {
         // Create the message parameters object.
         const messageParams = {
@@ -41,6 +40,16 @@ export const submitData = async () => {
         console.log(
           "Success, message published. MessageID is " + data.MessageId,
         );
+
+        const confirmationContainer = document.getElementById("confirmationContainer");
+
+        // Clear existing content in the container
+        confirmationContainer.innerHTML = "";
+
+        // Add a message at the top of the container
+        const message = document.createElement("p");
+        message.textContent = "You're added to the guest list!";
+        confirmationContainer.appendChild(message);
       } catch (err) {
         // Display error message if error is not sent
         console.error(err, err.stack);
@@ -56,32 +65,81 @@ export const submitData = async () => {
   } else {
     alert("Enter data in each field.");
   }
-  const scanParams = {
-    TableName: tableName,
-  };
-  
-  const scanResults = await dynamoClient.send(new ScanCommand(scanParams));
-  
-  // Log the retrieved items
-  console.log("Here's who's bringing what:", scanResults.Items);
-  
-  // Display the results on the HTML page
-  displayResults(scanResults.Items);
 };
 
+// Function to initialize and display results on page load
+const initializeResults = async () => {
+  try {
+    // Query the table to retrieve all items (you might want to refine this based on your use case)
+    const scanParams = {
+      TableName: "invitation",
+    };
+    
+    const scanResults = await dynamoClient.send(new ScanCommand(scanParams));
+    
+    // Log the retrieved items
+    console.log("Retrieved items from DynamoDB:", scanResults.Items);
+    
+    // Display the results on the HTML page
+    displayResults(scanResults.Items);
+  } catch (err) {
+    console.error("Error initializing results:", err);
+  }
+};
+
+// Function to display results on the HTML page as a table
 const displayResults = (items) => {
   const resultsContainer = document.getElementById("resultsContainer");
 
   // Clear existing content in the container
   resultsContainer.innerHTML = "";
 
-  // Iterate over the retrieved items and append them to the container
+
+  // Add a message at the top of the container
+  const message = document.createElement("p");
+  message.textContent = "Here's who is bringing what:";
+  resultsContainer.appendChild(message);
+
+  // Create a table element
+  const table = document.createElement("table");
+  table.border = "1";
+
+  // Create table header
+  const headerRow = table.insertRow(0);
+  const nameHeader = headerRow.insertCell(0);
+  const dishHeader = headerRow.insertCell(1);
+  const guestCountHeader = headerRow.insertCell(2);
+  nameHeader.textContent = "Name";
+  dishHeader.textContent = "Dish";
+  guestCountHeader.textContent = "Guest Count";
+
+  // Iterate over the retrieved items and append them to the table
   items.forEach((item) => {
-    const resultItem = document.createElement("div");
-    resultItem.textContent = JSON.stringify(item);
-    resultsContainer.appendChild(resultItem);
+    const row = table.insertRow();
+    const nameCell = row.insertCell(0);
+    const dishCell = row.insertCell(1);
+    const guestCountCell = row.insertCell(2);
+
+    // Populate cells with data from DynamoDB item
+    nameCell.textContent = item.Name.S;
+    dishCell.textContent = item.Dish.S;
+    guestCountCell.textContent = item.Number.N;
   });
+
+  // Append the table to the results container
+  resultsContainer.appendChild(table);
 };
 
-// Expose the function to the browser
-window.submitData = submitData;
+// Function to handle the submit button click
+const handleButtonClick = async () => {
+  await submitData(); // Call your existing submitData function to add a new item
+  initializeResults(); // Refresh the displayed results
+};
+
+// Expose functions to the browser
+window.initializeResults = initializeResults;
+window.handleButtonClick = handleButtonClick;
+
+// Call initializeResults on page load
+document.addEventListener("DOMContentLoaded", initializeResults);
+
