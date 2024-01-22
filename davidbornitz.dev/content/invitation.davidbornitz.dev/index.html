@@ -1,33 +1,52 @@
-<!DOCTYPE  html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>davidbornitz.dev</title>
-<meta name="author" content="david"/>
-</head>
-<body>
-<h1>You're Invited!</h1>
-<h2>David's Very Exciting Super Bowl and Board Game Fan Potluck!</h2>
-<ul>
-<li>WHY WOULD YOU DO THIS?: It's the Super Bowl!!! And potlucks are fun!</li>
-<li>WHERE: <a href="https://maps.app.goo.gl/F37qHPXaZBGFXfEj7">David's lair (Westminster)</a></li>
-<li>WHEN: Sunday, Feb 11th at 4pm</li>
-<li>WHAT IF I DONT CARE ABOUT FOOTBALL EVEN A LITTLE?: You should still come because there will be lots of non-football activities!  Board games, eating foods, and Super Bowl commercials will be available!</li>
-</ul>
-</body>
+<!doctype html>
+<html>
+  <head>
+    <title>A Really Cool Super Bowl Party</title>
+    <script type="text/javascript" src="./main.js"></script>
+  </head>
+  <body>
+    <h1>You're Invited!</h1>
+    <h2>David's Very Fun Super Bowl Potluck!</h2>
+    <p>HUH?: <br>It's the Super Bowl!!! And potlucks are fun!</p>
+    <p>WHERE: <a href="https://maps.app.goo.gl/F37qHPXaZBGFXfEj7">David's lair (Westminster)</a></p>
+    <p>WHEN: <br>Sunday, Feb 11th at 4pm</p>
+    <p>WHAT IF I DONT CARE ABOUT FOOTBALL?: <br>You should still come because there will be non-football activities!  Board games, eating foods, and Super Bowl commercials will be available!</p>
+    <p>Guests are welcome! Once you know who and what you're bringing, use this form to let me know!</p>
+    <table style="width: 100%">
+      <tr>
+        <td>Your name:</td>
+        <td><input type="text" id="Name" name="Name" /></td>
+      </tr>
+      <tr>
+        <td>How many guests (including yourself) are you bringing?:</td>
+        <td><input type="text" id="Number" name="Number" /></td>
+      </tr>
+      <tr>
+        <td>What dish are you bringing?:</td>
+        <td><input type="text" id="Dish" name="Dish" /></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td><button type="button" onclick="submitData();">I'll Be There!</button></td>
+        <script src="./main.js"></script>
+      </tr>
+    </table>
+  </body>
 </html>
+
 <style>
 body {
   font-family: Bevan;
   color: black;
-  background: rgba(165, 231, 181, .5);
+  background: rgb(255, 255, 255,0);
   Max-width: 940px;
-  margin-left: 18%;
-  margin-right: 18%;
+  margin-left: 23%;
+  margin-right: 23%;
 }
 
 html { 
-  background: url(stadium.jpg) no-repeat center center fixed; 
+  background: url(envelope2.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
