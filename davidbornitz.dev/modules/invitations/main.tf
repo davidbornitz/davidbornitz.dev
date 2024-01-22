@@ -215,6 +215,7 @@ resource "aws_iam_role" "invitation" {
 }
 
 data "aws_iam_policy_document" "invitation_role_policy" {
+  /*
   statement {
     effect = "Allow"
 
@@ -225,6 +226,7 @@ data "aws_iam_policy_document" "invitation_role_policy" {
 
     resources = ["*"]
   }
+  */
   statement {
     effect = "Allow"
 
