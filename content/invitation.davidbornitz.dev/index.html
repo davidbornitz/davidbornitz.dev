@@ -6,13 +6,17 @@
   </head>
   <body>
     <h1>You're Invited!</h1>
-    <h2>David's Very Fun Super Bowl Potluck!</h2>
+    <h2>&#127881;David's Very Fun Super Bowl Potluck!&#127881;</h2>
+    <figure id="caption">
+      <img src="football.png" alt="A football">
+      <figcaption>Pictured: the type of ball used in the Super Bowl</figcaption>
+    </figure>
     <p>HUH?: <br>It's the Super Bowl!!! And potlucks are fun!</p>
     <p>WHERE: <a href="https://maps.app.goo.gl/F37qHPXaZBGFXfEj7">David's lair (Westminster)</a></p>
     <p>WHEN: <br>Sunday, Feb 11th at 4pm</p>
     <p>WHAT IF I DONT CARE ABOUT FOOTBALL?: <br>You should still come because there will be non-football activities!  Board games, eating foods, and Super Bowl commercials will be available!</p>
-    <p>Guests are welcome! Once you know who and what you're bringing, use this form to let me know!</p>
-    <table style="width: 100%">
+    <p>Guests are welcome! Once you know who and what you're bringing, use this form to let me know!  You can submit again with the same name to change what you're bringing.</p>
+    <table id="input" style="width: 100%">
       <tr>
         <td>Your name:</td>
         <td><input type="text" id="Name" name="Name" /></td>
@@ -70,13 +74,30 @@ html {
 	float: right;
 }
 
+#caption {
+  border: 1px solid #000; /* You can adjust the color and width as needed */
+  padding: 8px; /* Optional: Add padding for some space around the content */
+  text-align: center; /* Optional: Center the content within the figure */
+  float: right;
+}
+
+#caption img {
+  width: 200px;
+  /* Add other styles for the image if needed */
+}
+
+#caption figcaption {
+  font-style: italic; /* Optional: Italicize the caption text */
+  /* Add other styles for the caption if needed */
+}
 
 p {
   font-size: 21px;
+  margin: 5%
 }
 
-h1 { font-size: 26px; }
-h2 { font-size: 24px; }
+h1 { font-size: 30px; text-align: center; }
+h2 { font-size: 24px; text-align: center; }
 h3 { font-size: 23px; }
 h5 { font-size: 22px; }
 h6 { font-size: 21px; }
@@ -85,5 +106,31 @@ li {
   font-size: .83em;
   margin-left: 10vw;
   list-style-type: disc;
+}
+
+/* Style for the results container */
+#resultsContainer {
+  margin-top: 20px;
+}
+
+/* Style for the table */
+#resultsContainer table {
+  width: 90%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+/* Style for table headers */
+#resultsContainer th {
+  background-color: #f2f2f2;
+  padding: 8px;
+}
+
+/* Style for table cells */
+#resultsContainer td {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 </style>
