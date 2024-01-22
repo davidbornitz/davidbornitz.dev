@@ -234,6 +234,15 @@ data "aws_iam_policy_document" "invitation_role_policy" {
 
     resources = [aws_dynamodb_table.invitation.arn]
   }
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "sns:Publish"
+    ]
+
+    resources = [aws_sns_topic.invitation_updates.arn]
+  }
 }
 
 resource "aws_iam_role_policy" "invitation" {
