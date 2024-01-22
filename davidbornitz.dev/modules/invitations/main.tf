@@ -172,7 +172,7 @@ resource "aws_dynamodb_table" "invitation" {
   }
 
   ttl {
-    attribute_name = "TimeToExist"
+    attribute_name = ""
     enabled        = false
   }
 }
