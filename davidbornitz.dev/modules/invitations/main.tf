@@ -158,6 +158,7 @@ resource "aws_cloudfront_key_group" "invitation" {
   name    = "invitation-key-group"
 }
 
+
 # Create a Dynamo table to hold Super Bowl Potluck signups
 
 resource "aws_dynamodb_table" "invitation" {
