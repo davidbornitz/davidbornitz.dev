@@ -104,7 +104,7 @@ resource "aws_cloudfront_distribution" "invitation" {
   default_root_object = "index.html"
 
   default_cache_behavior {
-    # trusted_key_groups = [aws_cloudfront_key_group.invitation.id]
+    #trusted_key_groups = [aws_cloudfront_key_group.invitation.id]
 
     allowed_methods  = ["HEAD", "GET"]
     cached_methods   = ["GET", "HEAD"]
