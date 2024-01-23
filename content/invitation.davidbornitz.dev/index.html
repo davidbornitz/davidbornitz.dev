@@ -1,22 +1,32 @@
 <!doctype html>
 <html>
   <head>
-    <title>A Really Cool Super Bowl Party</title>
+    <title>Super Bowl Party Invitation</title>
     <script type="text/javascript" src="./main.js"></script>
+
+    <!-- Open Graph Protocol meta tags -->
+    <meta property="og:title" content="Super Bowl Party Invitation">
+    <meta property="og:description" content="This is the gala event of the season.  You won't want to miss this!">
+    <meta property="og:image" content="football.png">
+    <meta property="og:url" content="invitation.davidbornitz.dev">
+    <meta property="og:type" content="website">
+
   </head>
   <body>
+    <header>
     <h1>You're Invited!</h1>
-    <h2>&#127881;David's Very Fun Super Bowl Potluck!&#127881;</h2>
+    <h2>&#127881;David's Super Cool Super Bowl Potluck!&#127881;</h2>
+    </header>
     <figure id="caption">
       <img src="football.png" alt="A football">
-      <figcaption>Pictured: the type of ball used in the Super Bowl</figcaption>
+      <figcaption>Pictured: the type of ball used in the Super Bowl. A football.</figcaption>
     </figure>
     <p>HUH?: <br>It's the Super Bowl!!! And potlucks are fun!</p>
-    <p>WHERE: <a href="https://maps.app.goo.gl/F37qHPXaZBGFXfEj7">David's lair (Westminster)</a></p>
+    <p>WHERE: <br> <a href="https://maps.app.goo.gl/F37qHPXaZBGFXfEj7" target=”_blank”>David's lair (Westminster)</a></p>
     <p>WHEN: <br>Sunday, Feb 11th at 4pm</p>
     <p>WHAT IF I DONT CARE ABOUT FOOTBALL?: <br>You should still come because there will be non-football activities!  Board games, eating foods, and Super Bowl commercials will be available!</p>
     <p>Guests are welcome! Once you know who and what you're bringing, use this form to let me know!  You can submit again with the same name to change what you're bringing.</p>
-    <table id="input" style="width: 100%">
+    <table id="input">
       <tr>
         <td>Your name:</td>
         <td><input type="text" id="Name" name="Name" /></td>
@@ -46,6 +56,9 @@
         initializeResults();
       });
     </script>
+  <footer>
+      <p>David Bornitz &bull; <a href="https://github.com/davidbornitz/davidbornitz.dev">github</a></p>
+  </footer>
   </body>
 </html>
 
@@ -60,7 +73,7 @@ body {
 }
 
 html { 
-  background: rgb(28, 166, 61);
+  background-color: #abaaaa;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -112,6 +125,7 @@ li {
 #input {
   margin-left: 5%;
   margin-right: 5%;
+  width: 90%;
 }
 
 /* Style for the results container */
@@ -126,6 +140,7 @@ li {
   margin-top: 10px;
   margin-right: 5%;
   margin-left: 5%;
+  margin-bottom: 10px;
 }
 
 /* Style for table headers */
@@ -138,5 +153,37 @@ li {
 #resultsContainer td {
   border: 1px solid #ddd;
   padding: 8px;
+}
+
+header {
+    background-color: #06420d;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+header a {
+    color: #ffd700; /* Set the link color to a contrasting color */
+    text-decoration: none;
+}
+
+header a:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+footer {
+    background-color: #06420d;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+footer a {
+    color: #ffd700; /* Set the link color to a contrasting color */
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline; /* Add underline on hover */
 }
 </style>
