@@ -1,5 +1,5 @@
 # Mac OS
-.DS_Store
+*.DS_Store
 
 # Locally compiled invitation app
 /content/invitation.davidbornitz.dev/main.js
