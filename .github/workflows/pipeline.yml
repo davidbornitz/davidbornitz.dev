@@ -55,7 +55,7 @@ jobs:
   
     - name: Terraform init
       id: init
-      run: terragrunt init"
+      run: terragrunt init
 
     - name: Terragrunt format
       id: fmt
