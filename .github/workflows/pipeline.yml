@@ -52,9 +52,9 @@ jobs:
         wget -q --show-progress -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v$TERRAGRUNT_VERSION/terragrunt_linux_amd64
         chmod +x bin/terragrunt
         echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
-        echo $GITHUB_PATH
-        cd bin
-        .terragrunt --version
+        echo "Path: $GITHUB_PATH"
+        ls bin
+        terragrunt --version
   
     - name: Terragrunt init
       id: init
