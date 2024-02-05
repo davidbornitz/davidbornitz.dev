@@ -59,7 +59,9 @@ jobs:
   
     - name: Terragrunt init
       id: init
-      run: terragrunt init
+      run: |
+        terragrunt --version
+        terragrunt init
 
     - name: Terragrunt format
       id: fmt
