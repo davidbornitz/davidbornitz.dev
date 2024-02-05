@@ -18,6 +18,7 @@ env:
  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
  # S3 bucket for the Terraform state
  BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE}}
+ GITHUB_TOKEN: ${{ secrets.TOKEN }}
  tg_version: '0.55.0'
  tf_version: '1.6.6'
 
@@ -60,32 +61,8 @@ jobs:
         tf_version: ${{ env.tf_version }}
         tg_version: ${{ env.tg_version }}
         tg_command: 'plan'
+        tg_comment: true
   
-    - uses: actions/github-script@v6
-      if: github.event_name == 'pull_request'
-      env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-      with:
-        script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outputs.tg_action_output }}\`
-          #### Terraform Plan 📖\`${{ steps.plan.outputs.tg_action_output }}\`
-
-          <details><summary>Show Plan</summary>
-
-          \`\`\`\n
-          ${process.env.PLAN}
-          \`\`\`
-
-          </details>
-          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: output
-          })
-
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
@@ -98,3 +75,4 @@ jobs:
         tg_version: ${{ env.tg_version }}
         tg_dir: ${{ env.working_dir }}
         tg_command: 'apply'
+        tg_comment: true
