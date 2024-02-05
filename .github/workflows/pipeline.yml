@@ -43,23 +43,30 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: 1.3.0
+
+    - name: Setup Terragrunt
+      run: |
+        mkdir bin
+        wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
+        chmod +x bin/terragrunt
+        echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
   
     - name: Terraform init
       id: init
-      run: terraform init -backend-config="bucket=$BUCKET_TF_STATE"
+      run: terragrunt init"
 
-    - name: Terraform format
+    - name: Terragrunt format
       id: fmt
-      run: terraform fmt -check
+      run: terragrunt fmt -check
   
-    - name: Terraform validate
+    - name: Terragrunt validate
       id: validate
-      run: terraform validate
+      run: terragrunt validate
 
-    - name: Terraform plan
+    - name: Terragrunt plan
       id: plan
       if: github.event_name == 'pull_request'
-      run: terraform plan -no-color -input=false
+      run: terragrunt plan -input=false
       continue-on-error: true
   
     - uses: actions/github-script@v6
@@ -89,10 +96,10 @@ jobs:
             body: output
           })
 
-    - name: Terraform Plan Status
+    - name: Terragrunt Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
 
-    - name: Terraform Apply
+    - name: Terragrunt Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
+      run: terragrunt apply -auto-approve -input=false
