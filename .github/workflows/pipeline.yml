@@ -4,11 +4,9 @@ on:
  push:
    branches:
    - main
-   - feature/terragrunt
  pull_request:
    branches:
    - main
-   - feature/terragrunt
  
 env:
  # verbosity setting for Terraform logs
@@ -18,10 +16,6 @@ env:
  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
  # S3 bucket for the Terraform state
  BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE}}
- GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
- tg_version: '0.55.0'
- tf_version: '1.6.6'
-
  
 jobs:
   davidbornitz-build:
@@ -44,48 +38,61 @@ jobs:
       run: |
         npm install
         yarn build:frontend
-        echo $GITHUB_TOKEN
-        curl --request POST \
-        --url https://api.github.com/repos/${{ github.repository }}/issues \
-        --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-        --header 'content-type: application/json' \
-        --data '{
-          "title": "Automated issue for commit: ${{ github.sha }}",
-          "body": "This issue was automatically created by the GitHub Action workflow **${{ github.workflow }}**. \n\n The commit hash was: _${{ github.sha }}_."
-          }' \
-        --fail
 
-    - name: Check terragrunt HCL
-      id: fmt
-      uses: gruntwork-io/terragrunt-action@v2
+    - name: Setup Terraform with specified version on the runner
+      uses: hashicorp/setup-terraform@v2
       with:
-        tf_version: ${{ env.tf_version }}
-        tg_version: ${{ env.tg_version }}
-        tg_comment: 1
-        tg_command: 'hclfmt --terragrunt-check --terragrunt-diff'
+        terraform_version: 1.3.0
+  
+    - name: Terraform init
+      id: init
+      run: terraform init -backend-config="bucket=$BUCKET_TF_STATE"
 
-    - name: Plan
+    - name: Terraform format
+      id: fmt
+      run: terraform fmt -check
+  
+    - name: Terraform validate
+      id: validate
+      run: terraform validate
+
+    - name: Terraform plan
       id: plan
       if: github.event_name == 'pull_request'
-      uses: gruntwork-io/terragrunt-action@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
-      with:
-        tf_version: ${{ env.tf_version }}
-        tg_version: ${{ env.tg_version }}
-        tg_comment: 1
-        tg_command: 'plan'
+      run: terraform plan -no-color -input=false
+      continue-on-error: true
   
+    - uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        script: |
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
 
-    - name: Deploy
-      uses: gruntwork-io/terragrunt-action@v2
+    - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      with:
-        tf_version: ${{ env.tf_version }}
-        tg_version: ${{ env.tg_version }}
-        tg_dir: ${{ env.working_dir }}
-        tg_comment: 1
-        tg_command: 'apply'
+      run: terraform apply -auto-approve -input=false
