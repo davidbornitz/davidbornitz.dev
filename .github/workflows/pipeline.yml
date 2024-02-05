@@ -67,9 +67,8 @@ jobs:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
         script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outputs.tg_action_output }}\`
+          #### Terraform Plan 📖\`${{ steps.plan.outputs.tg_action_output }}\`
 
           <details><summary>Show Plan</summary>
 
