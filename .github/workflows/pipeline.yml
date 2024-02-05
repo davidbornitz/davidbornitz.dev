@@ -53,7 +53,7 @@ jobs:
         chmod +x bin/terragrunt
         echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
         echo "Path: $GITHUB_PATH"
-        ls bin
+        ls -l bin
         terragrunt --version
   
     - name: Terragrunt init
