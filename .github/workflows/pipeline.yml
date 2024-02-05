@@ -56,7 +56,6 @@ jobs:
         pwd
         echo "Path: $PATH"
         ls -l $GITHUB_WORKSPACE/bin
-        terragrunt --version
   
     - name: Terragrunt init
       id: init
