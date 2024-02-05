@@ -51,7 +51,8 @@ jobs:
         mkdir bin
         wget -q -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v$TERRAGRUNT_VERSION/terragrunt_linux_amd64
         chmod +x bin/terragrunt
-        echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
+        echo "$GITHUB_WORKSPACE"
+        echo "${{ github.workspace }}/bin" >> $GITHUB_PATH
         pwd
         echo "Path: $PATH"
         ls -l $GITHUB_WORKSPACE/bin
