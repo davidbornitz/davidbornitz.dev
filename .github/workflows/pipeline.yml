@@ -71,12 +71,7 @@ jobs:
     - name: Terragrunt plan
       id: plan
       if: github.event_name == 'pull_request'
-      run: |
-        echo 'JSON_RESPONSE<<EOF'
-        curl https://example.com
-        echo EOF
-        >> "$GITHUB_ENV"
-        echo "plan=$(terragrunt plan -input=false -no-color | grep -E '(^.*[#~+-] .*|^[[:punct:]]|Plan)')" >> "$GITHUB_OUTPUT"
+      run: echo "plan=$(terragrunt plan -input=false -no-color | grep -E '(^.*[#~+-] .*|^[[:punct:]]|Plan)')" >> "$GITHUB_OUTPUT"
       continue-on-error: true
   
     - uses: actions/github-script@v6
