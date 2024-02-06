@@ -10,8 +10,7 @@ provider "aws" {
 locals {
   sites = [
     "davidbornitz.dev",
-    "resume.davidbornitz.dev",
-    "test.david"
+    "resume.davidbornitz.dev"
   ]
 }
 
