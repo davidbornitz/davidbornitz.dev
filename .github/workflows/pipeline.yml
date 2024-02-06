@@ -45,6 +45,7 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: $TERRAFORM_VERSION
+        terraform_wrapper: false
 
     - name: Setup Terragrunt
       run: |
