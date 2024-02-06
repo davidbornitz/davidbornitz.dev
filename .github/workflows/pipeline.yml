@@ -72,7 +72,7 @@ jobs:
       id: plan
       if: github.event_name == 'pull_request'
       run: |
-        echo 'OUTPUT<<EOF' >> $GITHUB_OUTPUT
+        echo 'plan<<EOF' >> $GITHUB_OUTPUT
         terragrunt plan -input=false -no-color | grep -E '(^.*[#~+-] .*|^[[:punct:]]|Plan)' >> $GITHUB_OUTPUT
         echo 'EOF' >> $GITHUB_OUTPUT
       continue-on-error: true
