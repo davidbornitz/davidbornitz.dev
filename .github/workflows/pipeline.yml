@@ -71,7 +71,7 @@ jobs:
     - name: Terragrunt plan
       id: plan
       if: github.event_name == 'pull_request'
-      run: terragrunt plan -input=false >> "$GITHUB_OUTPUT"
+      run: echo "plan=${terragrunt plan -input=false}" >> "$GITHUB_OUTPUT"
       continue-on-error: true
   
     - uses: actions/github-script@v6
@@ -88,7 +88,7 @@ jobs:
           <details><summary>Show Plan</summary>
 
           \`\`\`\n
-          ${{ steps.plan.outputs}}
+          ${{ steps.plan.outputs.plan }}
           \`\`\`
 
           </details>
