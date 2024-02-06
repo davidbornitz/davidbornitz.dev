@@ -71,7 +71,7 @@ jobs:
     - name: Terragrunt plan
       id: plan
       if: github.event_name == 'pull_request'
-      run: echo "plan=${terragrunt plan -input=false}" >> "$GITHUB_OUTPUT"
+      run: echo "plan=$(terragrunt plan -input=false)" >> "$GITHUB_OUTPUT"
       continue-on-error: true
   
     - uses: actions/github-script@v6
