@@ -57,13 +57,8 @@ jobs:
     - name: Terragrunt init
       id: init
       run: |
-        terragrunt init -debug 2>&1 | tee terragrunt_init.log
+        terragrunt init
         continue-on-error: true
-
-    - name: Show Terragrunt Init Log
-      run: |
-        cat terragrunt_init.log
-      if: ${{ failure() }}
 
     - name: Terragrunt format
       id: fmt
