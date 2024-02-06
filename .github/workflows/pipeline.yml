@@ -56,7 +56,6 @@ jobs:
     - name: Terragrunt init
       id: init
       run: |
-        terragrunt --version
         terragrunt init -debug 2>&1 | tee terragrunt_init.log
         continue-on-error: true
 
