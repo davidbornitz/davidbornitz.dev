@@ -58,7 +58,7 @@ jobs:
       id: init
       run: |
         terragrunt init
-        continue-on-error: true
+      continue-on-error: true
 
     - name: Terragrunt format
       id: fmt
