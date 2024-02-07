@@ -13,7 +13,7 @@ module "s3website" {
   name     = each.value
   zone_id  = aws_route53_zone.davidbornitz.zone_id
   cert_arn = aws_acm_certificate.davidbornitz.arn
-  }
+    }
 
 
 module "invitations" {
