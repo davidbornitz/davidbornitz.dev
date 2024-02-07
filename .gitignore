@@ -1,3 +1,7 @@
+# Terragrunt-generated
+backend.tf
+provider.tf
+
 # Mac OS
 *.DS_Store
 

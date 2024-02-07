@@ -1,4 +1,4 @@
-# stage/terragrunt.hcl
+# davidbornitz.dev terragrunt.hcl
 remote_state {
   backend = "s3"
   generate = {
@@ -13,4 +13,19 @@ remote_state {
     encrypt        = true
     dynamodb_table = "app-state"
   }
+}
+
+generate "provider" {
+  path = "provider.tf"
+  if_exists = "overwrite_terragrunt"
+  contents = <<EOF
+provider "aws" {
+  region = "us-east-2"
+}
+
+provider "aws" {
+  alias  = "us-east-1"
+  region = "us-east-1"
+}
+EOF
 }
